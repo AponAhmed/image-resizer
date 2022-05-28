@@ -5,7 +5,7 @@ namespace ImageResizer\lib;
 /**
  * Description of AdminView
  *
- * @author Mahabub
+ * @author Apon
  */
 class AdminView {
 
