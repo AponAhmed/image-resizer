@@ -59,6 +59,9 @@ class SizeBuilder {
         }
         $this->sizes = $RegSizes;
 
+        //echo "<pre>";
+        //var_dump($this->sizes);
+        //exit;
         //Debug
 //        ini_set('display_errors', 1);
 //        ini_set('display_startup_errors', 1);
@@ -101,6 +104,11 @@ class SizeBuilder {
                         unset($this->attachmentMeta['sizes'][$sizeKey]);
                     }
                 }
+                //Delete All Sizes
+                if ($this->option['replace_existingSize'] == "1") {
+                    $this->DeleteAllSizes();
+                }
+
                 foreach ($this->sizes as $sizeName => $val) {
                     if ($this->attachmentMeta['width'] > $val['width']) {
                         $sW = $val['width'];
@@ -147,6 +155,20 @@ class SizeBuilder {
         }
         echo json_encode(array('total' => $totalC, 'done' => $doneC, 'info' => $infAll));
         wp_die();
+    }
+
+    /**
+     * Delete Image sizes 
+     */
+    function DeleteAllSizes() {
+        $orginalImage = $this->upDir['basedir'] . "/" . $this->pathInfo['dirname'] . "/" . $this->pathInfo['basename'];
+        $targetedImagePrifix = $this->upDir['basedir'] . "/" . $this->pathInfo['dirname'] . "/" . $this->pathInfo['filename'];
+
+        foreach (glob($targetedImagePrifix . "*." . $this->pathInfo['extension']) as $filename) {
+            if ($filename !== $orginalImage && file_exists($filename)) {
+                unlink($filename);
+            }
+        }
     }
 
     /**

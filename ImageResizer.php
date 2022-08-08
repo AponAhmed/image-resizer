@@ -6,7 +6,7 @@
  * Description: Generate Multiple size Of Image in Media 
  * Author: SiATEX
  * Author URI: https://www.siatex.com
- * Version: 2.1
+ * Version: 2.3
  */
 
 namespace ImageResizer;
@@ -44,12 +44,11 @@ class ImageResizer {
     //put your code here
     public function __construct() {
         $this->setOption();
+        $this->mediaSizeSet();
         if (is_admin()) {
             $this->builder = new SizeBuilder($this->option);
             //$this->resize = new Resizer($this->option);
             $this->adminView = new lib\AdminView($this->option);
-        } else {
-            
         }
         //Ajax Hook Register
         add_action('wp_ajax_media_resize_option', [$this, 'media_resize_option']);
@@ -74,6 +73,12 @@ class ImageResizer {
         if (!empty($optString)) {
             $optArr = json_decode($optString, true);
             $this->option = array_merge($this->option, $optArr);
+        }
+    }
+
+    public function mediaSizeSet() {
+        foreach ($this->option['media-size'] as $size) {
+            add_image_size($size['name'], $size['width'], $size['height'], false);
         }
     }
 
