@@ -6,7 +6,7 @@
  * Description: Generate Multiple size Of Image in Media 
  * Author: SiATEX
  * Author URI: https://www.siatex.com
- * Version: 2.3
+ * Version: 2.5
  */
 
 namespace ImageResizer;
@@ -36,13 +36,15 @@ define('IMAGE_TYPES', ['jpg', 'jpeg', 'png', 'gif', 'webp', 'bmp', 'JPG']);
 //_wp_attached_file
 //_wp_attachment_metadata
 
-class ImageResizer {
+class ImageResizer
+{
 
     public $option;
     private $optionKey = "media_resize_options";
 
     //put your code here
-    public function __construct() {
+    public function __construct()
+    {
         $this->setOption();
         $this->mediaSizeSet();
         if (is_admin()) {
@@ -57,16 +59,19 @@ class ImageResizer {
     /**
      * Set Options
      */
-    function setOption() {
+    function setOption()
+    {
         $lastBuild = get_option('lastBuildProcess');
         $this->option = [
             'allow_extensions' => IMAGE_TYPES,
             'maxItemResize' => 1,
+            'replace_existingSize' => 1,
             'lastBuild' => empty($lastBuild) ? 0 : $lastBuild,
             'imageQuality' => 100,
             'media-size' => [
                 ['name' => 'small-size', 'width' => 100, 'height' => 100],
                 ['name' => 'thumbnail', 'width' => 150, 'height' => 150],
+                ['name' => 'medium', 'width' => 300, 'height' => 300],
             ]
         ];
         $optString = get_option($this->optionKey);
@@ -76,7 +81,8 @@ class ImageResizer {
         }
     }
 
-    public function mediaSizeSet() {
+    public function mediaSizeSet()
+    {
         foreach ($this->option['media-size'] as $size) {
             add_image_size($size['name'], $size['width'], $size['height'], false);
         }
@@ -86,7 +92,8 @@ class ImageResizer {
      * Ajax Callback of Media Resize Option store
      * 
      */
-    function media_resize_option() {
+    function media_resize_option()
+    {
         $data = [];
         parse_str($_POST['data'], $data);
         $options = json_encode($data);
@@ -94,11 +101,6 @@ class ImageResizer {
         echo 1;
         wp_die();
     }
-
-    function frontendHook() {
-        
-    }
-
 }
 
 $imageResizer = new ImageResizer();

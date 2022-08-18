@@ -97,7 +97,7 @@ class SizeBuilder {
                 $inf = [];
 
                 $ex_sizes = ['m4', 'm6', 'col-1', 'col-3', 'col-4', 'col-6'];
-                //$this->attachmentMeta['sizes'] = []; //Remove All Existing sizes
+                $this->attachmentMeta['sizes'] = []; //Remove All Existing sizes
                 foreach ($this->attachmentMeta['sizes'] as $sizeKey => $size) { //Remove Existing sizes
                     $sizePathInfo = pathinfo($size['file']);
                     if (in_array($sizeKey, $ex_sizes) || $sizePathInfo['extension'] != $this->pathInfo['extension']) {
