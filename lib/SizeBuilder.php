@@ -9,8 +9,8 @@ namespace ImageResizer\lib;
  */
 class SizeBuilder {
 
-    public array $attachmentMeta;
-    public array $sizes;
+    public $attachmentMeta;
+    public $sizes;
 
     /**
      * Path Information Of Current File
@@ -20,7 +20,7 @@ class SizeBuilder {
      * -extension
      * -filename
      */
-    public array $pathInfo;
+    public $pathInfo;
 
     /**
      * OG Image Object
@@ -47,6 +47,10 @@ class SizeBuilder {
 
     function buildImageSize() {
         global $wpdb, $_wp_additional_image_sizes;
+
+        //ini_set('display_errors', 1);
+        //ini_set('display_startup_errors', 1);
+        //error_reporting(E_ALL);
         //Registerted Sizes
         $RegSizes = $_wp_additional_image_sizes;
 //      usort($RegSizes, function ($a, $b) {
@@ -91,6 +95,7 @@ class SizeBuilder {
                 }
                 if (!file_exists($source_url)) {
                     $infAll[$this->ID]['notFound'][] = $source_url;
+                    continue;
                 }
                 $this->SourceImage = $this->createImageStream($source_url);
 
@@ -241,6 +246,9 @@ class SizeBuilder {
      */
     function resize_scal($source_image, $dst, $dest_imagex = false, $dest_imagey = false, $quality = 100) {
         //$source_image = $this->createImageStream($src); //, $dst, $quality
+        if (!$source_image) {
+            return false;
+        }
 
         $source_imagex = imagesx($source_image);
         $source_imagey = imagesy($source_image);

@@ -6,7 +6,7 @@
  * Description: Generate Multiple size Of Image in Media 
  * Author: SiATEX
  * Author URI: https://www.siatex.com
- * Version: 2.5
+ * Version: 2.5.1
  */
 
 namespace ImageResizer;
