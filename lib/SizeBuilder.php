@@ -95,6 +95,10 @@ class SizeBuilder {
                 }
                 if (!file_exists($source_url)) {
                     $infAll[$this->ID]['notFound'][] = $source_url;
+                    $infAll[$this->ID] = $inf;
+                    //end of size loop
+                    $this->updateMeta();
+                    $lastBuild = $this->ID;
                     continue;
                 }
                 $this->SourceImage = $this->createImageStream($source_url);
